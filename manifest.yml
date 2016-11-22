@@ -4,4 +4,6 @@
     memory: 128M
     instances: 1
     buildpack: ruby_buildpack
-    host: jeanie-auth  
+    host: jeanie-auth
+    services: 
+      - jeaniedb

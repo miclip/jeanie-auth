@@ -10,8 +10,14 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  adapter: postgresql
+  database: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeaniedb'].first['credentials']['database'] rescue 'jeanie' %>
+  username: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeaniedb'].first['credentials']['username'] rescue '' %>
+  password: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeaniedb'].first['credentials']['password'] rescue '' %>
+  host: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeaniedb'].first['credentials']['hostname'] rescue 'localhost' %>
+  encoding: UTF8
+  pool: 5
+  timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
