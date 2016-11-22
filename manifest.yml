@@ -1,0 +1,7 @@
+---
+  applications:
+  - name: jeanie-auth
+    memory: 128M
+    instances: 1
+    buildpack: ruby_buildpack
+    host: jeanie-auth  
