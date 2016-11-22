@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/miclip/jeanie-auth.svg?branch=master)](https://travis-ci.org/miclip/jeanie-auth)
-
+[![Code Climate](https://codeclimate.com/github/miclip/jeanie-auth/badges/gpa.svg)](https://codeclimate.com/github/miclip/jeanie-auth)
 
 # README
 
