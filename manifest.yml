@@ -6,4 +6,4 @@
     buildpack: ruby_buildpack
     host: jeanie-auth
     services: 
-      - jeaniedb
+      - jeanieauthdb
