@@ -5,7 +5,12 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  database: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['database'] rescue 'jeanie-auth' %>
+  username: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['username'] rescue '' %>
+  password: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['password'] rescue '' %>
+  host: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['hostname'] rescue 'localhost' %>
+  encoding: UTF8
   pool: 5
   timeout: 5000
 
@@ -23,8 +28,14 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: db/test.sqlite3
+  adapter: postgresql
+  database: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['database'] rescue 'jeanie-auth' %>
+  username: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['username'] rescue 'postgres' %>
+  password: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['password'] rescue '' %>
+  host: <%= JSON.parse(ENV['VCAP_SERVICES'])['jeanieauthdb'].first['credentials']['hostname'] rescue 'localhost' %>
+  encoding: UTF8
+  pool: 5
+  timeout: 5000
 
 production:
   <<: *default
