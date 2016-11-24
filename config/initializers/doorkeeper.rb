@@ -4,22 +4,18 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
+    current_user || warden.authenticate!(scope: :user)
   end
 
-  # If you want to restrict access to the web interface for adding oauth authorized applications, you need to declare the block below.
-  # admin_authenticator do
+  #admin_authenticator do
   #   # Put your admin authentication logic here.
   #   # Example implementation:
   #   Admin.find_by_id(session[:admin_id]) || redirect_to(new_admin_session_url)
   # end
 
-  # Authorization Code expiration time (default 10 minutes).
-  # authorization_code_expires_in 10.minutes
+  authorization_code_expires_in 10.minutes
 
-  # Access token expiration time (default 2 hours).
-  # If you want to disable expiration, set this to nil.
-  # access_token_expires_in 2.hours
+  access_token_expires_in 2.hours
 
   # Assign a custom TTL for implicit grants.
   # custom_access_token_expires_in do |oauth_client|
@@ -28,7 +24,12 @@ Doorkeeper.configure do
 
   # Use a custom class for generating the access token.
   # https://github.com/doorkeeper-gem/doorkeeper#custom-access-token-generator
-  # access_token_generator "::Doorkeeper::JWT"
+  # access_token_generator '::Doorkeeper::JWT'
+
+  # The controller Doorkeeper::ApplicationController inherits from.
+  # Defaults to ActionController::Base.
+  # https://github.com/doorkeeper-gem/doorkeeper#custom-base-controller
+  # base_controller 'ApplicationController'
 
   # Reuse access token for the same resource owner within an application (disabled by default)
   # Rationale: https://github.com/doorkeeper-gem/doorkeeper/issues/383
@@ -38,10 +39,10 @@ Doorkeeper.configure do
   # use_refresh_token
 
   # Provide support for an owner to be assigned to each registered application (disabled by default)
-  # Optional parameter :confirmation => true (default false) if you want to enforce ownership of
+  # Optional parameter confirmation: true (default false) if you want to enforce ownership of
   # a registered application
   # Note: you must also run the rails g doorkeeper:application_owner generator to provide the necessary support
-  # enable_application_owner :confirmation => false
+  # enable_application_owner confirmation: false
 
   # Define access token scopes for your provider
   # For more information go to
@@ -90,14 +91,14 @@ Doorkeeper.configure do
   #   http://tools.ietf.org/html/rfc6819#section-4.4.2
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
-  # grant_flows %w(authorization_code client_credentials)
+  grant_flows %w(authorization_code client_credentials)
 
   # Under some circumstances you might want to have applications auto-approved,
   # so that the user skips the authorization step.
   # For example if dealing with a trusted application.
-  # skip_authorization do |resource_owner, client|
-  #   client.superapp? or resource_owner.admin?
-  # end
+  skip_authorization do |resource_owner, client|
+    true
+  end
 
   # WWW-Authenticate Realm (default "Doorkeeper").
   # realm "Doorkeeper"
